@@ -7,7 +7,8 @@ app.on('ready', () => {
     width: 300,
     height: 300,
     webPreferences: {
-      nodeIntegration: true // 设置开启node
+      nodeIntegration: true, // 设置开启node
+      contextIsolation: false
     }
   });
   win.loadFile('./index.html');
@@ -16,7 +17,7 @@ app.on('ready', () => {
 
 function handleIPC() {
   ipcMain.handle('work-notification', async function() {
-    let res = await new Promise((resolve, reject) => {
+    let res = await new Promise((resolve) => {
       let notification = new Notification({
         title: '任务结束',
         body: '是否开始休息',
@@ -32,6 +33,6 @@ function handleIPC() {
         resolve('work');
       });
     });
-    return res;
+    return res; // 向渲染进程返回结果
   });
 }
